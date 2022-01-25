@@ -5,7 +5,7 @@ import routes from "./Router/Web.routes";
 function App() {
   return (
     <>
-      <h1>Pelazio Shop!</h1>
+      <h1 style={{ backgroundColor: "cyan", color: "gray", padding: "1rem", textAlign: "center" }}>Pelazio Shop!</h1>
       <Router>
         <Suspense fallback={<h5>loading...</h5>}>
           <Routes>
