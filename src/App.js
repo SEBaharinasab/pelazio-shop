@@ -1,11 +1,11 @@
 import { Suspense } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import ThemeProvider from "./Components/ThemeProvider";
 import routes from "./Router/Web.routes";
 
 function App() {
   return (
-    <>
-      <h1 style={{ backgroundColor: "cyan", color: "gray", padding: "1rem", textAlign: "center" }}>Pelazio Shop!</h1>
+    <ThemeProvider>
       <Router>
         <Suspense fallback={<h5>loading...</h5>}>
           <Routes>
@@ -22,7 +22,7 @@ function App() {
           </Routes>
         </Suspense>
       </Router>
-    </>
+    </ThemeProvider>
 
   );
 }
