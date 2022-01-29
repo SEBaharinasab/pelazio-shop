@@ -12,25 +12,47 @@ const initialState = {
       { id: "pl-3576", title: 'Product Four', price: 1000000, description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos reiciendis ipsum labore, voluptatum rerum, sapiente incidunt nihil odio enim, nemo atque! Atque dignissimos neque, eos nesciunt voluptatibus rem voluptatem! Dolorum!", image: productImageFour }
    ],
    cart: [
-      { userId: 0, productId: "pl-3379", count: "12" }
+      { id: 0, userId: 0, productId: "pl-3379", count: "12" },
+      { id: 1, userId: 0, productId: "pl-8564", count: "2" },
+      { id: 2, userId: 0, productId: "pl-3576", count: "1" },
    ],
    users: [
       { id: 0, name: 'Ehsan' }
    ]
 };
 
-export const productsSlice = createSlice({
-   name: "products",
+export const databaseSlice = createSlice({
+   name: "database",
    initialState,
    reducers: {
-      methodOne(state) {
-         ++state.value;
+      // Increase the number of shopping cart order items
+      increaseCartOrder(state, action) {
+         const itemIndex = state.cart.findIndex(item => item.id === action.payload);
+         (state.cart[itemIndex].count)++;
       },
-      methodTwo(state) {
-         --state.value;
+
+      // Decrease the number of shopping cart order items
+      decreaseCartOrder(state, action) {
+         const itemIndex = state.cart.findIndex(item => item.id === action.payload);
+         (state.cart[itemIndex].count === 0)
+            ? (state.cart[itemIndex].count = 0)
+            : (state.cart[itemIndex].count--);
+      },
+
+      removeOrder(state, action) {
+         const itemIndex = state.cart.findIndex(item => item.id === action.payload);
+         state.cart.splice(itemIndex, 1);
+      },
+      addToCart(state, action) {
+         state.cart.push({
+            id: Date.now(),
+            userId: 0,
+            productId: action.payload.productId,
+            count: action.payload.count
+         });
       }
    }
 });
 
-export const { methodOne, methodTwo } = productsSlice.actions;
-export default productsSlice.reducer;
+export const { increaseCartOrder, decreaseCartOrder, removeOrder, addToCart } = databaseSlice.actions;
+export default databaseSlice.reducer;

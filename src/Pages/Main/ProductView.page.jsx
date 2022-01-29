@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
-import { useParams } from "react-router-dom";
+import { useSelector, useDispatch } from 'react-redux';
+import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { FaCartPlus, FaPlus, FaMinus } from "react-icons/fa";
+import { addToCart } from '../../Store/reducers/database.slice';
 
 function ProductView() {
+   const navigate = useNavigate()
+   const dispatch = useDispatch();
    // Product selection based on the productID obtained from the url
    const { productId } = useParams();
    const [productInformation] = useSelector(state => state.db.products.filter(product => product.id === productId));
@@ -13,8 +16,9 @@ function ProductView() {
    const cartPlus = () => setNumberOfOrder(num => ++num);
    const cartMinus = () => setNumberOfOrder(num => num !== 0 ? --num : 0);
 
-   const addToCart = () => {
-      console.log(numberOfOrder + "->" + productInformation.id);
+   const addNewToCart = () => {
+      dispatch(addToCart({ count: numberOfOrder, productId: productInformation.id }));
+      navigate('/cart');
    };
 
    return productInformation ?
@@ -30,14 +34,14 @@ function ProductView() {
                </div>
             </div>
             <div className={"sm:col-span-3 sm:flex sm:flex-col sm:gap-3"}>
-               <h1 className={"hidden sm:block text-gray-700 text-4xl font-bold"}>{productInformation.title}</h1>
+               <h1 className={"hidden sm:block text-slate-900 text-4xl font-bold dark:text-slate-300"}>{productInformation.title}</h1>
                <span className={"inline-flex overflow-hidden"}>
                   <button className={"rounded-l bg-gray-600 text-white px-2 sm:px-3 sm:py-2"} onClick={cartMinus}><FaMinus /></button>
                   <input className={"border-y border-gray-600 w-10 text-center"} type="number" value={numberOfOrder} onChange={(e) => setNumberOfOrder(e.target.value)} />
                   <button className={"rounded-r bg-gray-600 text-white px-2 sm:px-3 sm:py-2"} onClick={cartPlus}><FaPlus /></button>
-                  <button className={"ml-2 rounded text-red-500 text-3xl"} onClick={addToCart}><FaCartPlus /></button>
+                  <button className={"ml-2 rounded text-red-500 text-3xl dark:text-red-600"} onClick={addNewToCart}><FaCartPlus /></button>
                </span>
-               <p className=''>{productInformation.description}</p>
+               <p className='dark:text-slate-300'>{productInformation.description}</p>
             </div>
          </div>
       </>) :

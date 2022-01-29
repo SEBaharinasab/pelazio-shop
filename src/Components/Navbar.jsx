@@ -6,7 +6,9 @@ import { FaMoon, FaSun, FaShoppingCart } from "react-icons/fa";
 
 function Navbar() {
    const dispatch = useDispatch();
-   const themeDarkMode = useSelector(state => state.theme.darkMode);
+   const [themeDarkMode, cartCount] =
+      useSelector(state => ([state.theme.darkMode, state.db.cart.length]));
+
    return (
       <nav className={"bg-cyan-700 text-white"}>
          <div className={"container mx-auto flex items-center justify-center relative p-4"}>
@@ -24,7 +26,7 @@ function Navbar() {
                <FaShoppingCart size={24} />
                <span
                   className={" absolute -translate-y-1/2 translate-x-1/2 -top-0.5 -right-0.5 bg-red-500 text-white text-xs px-1 py-0.5  rounded-full"}
-               >100</span>
+               >{cartCount}</span>
             </Link>
          </div>
       </nav>
